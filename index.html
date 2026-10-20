@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Control Financiero Bimonetario</title>
+  <title>Control Financiero Cloud</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -15,265 +15,68 @@
       --accent-blue: #3b82f6;
       --accent-amber: #f59e0b;
       --border: #334155;
-      --input-bg: #0f172a;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 15px; }
+    .container { max-width: 900px; margin: 0 auto; }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 16px;
-      line-height: 1.5;
-    }
+    .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    h1 { color: var(--accent-blue); font-size: 1.5rem; font-weight: 600; }
+    
+    .sync-status { font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid var(--border); }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
 
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+    .stat-box { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; border: 1px solid var(--border); }
+    .stat-box .title { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+    .stat-box .amount { font-size: 1.25rem; font-weight: bold; margin-top: 4px; }
+    .sub-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
-    h1 {
-      color: var(--accent-blue);
-      font-size: 1.75rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+    form { display: grid; gap: 10px; }
+    label { font-size: 0.85rem; color: var(--text-muted); }
+    input, select, button { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: #0f172a; color: var(--text); font-size: 0.95rem; }
+    button { background: var(--accent-blue); color: white; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; }
+    button:hover { opacity: 0.9; }
+    .btn-danger { background: var(--accent-red); }
+    .btn-success { background: var(--accent-green); }
 
-    h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--text);
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--text-muted); }
 
-    h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
+    .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
+    .badge-ingreso { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+    .badge-egreso { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; }
+    .tab-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
+    .tab-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-
-    .stat-box {
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 8px;
-      padding: 14px;
-      border: 1px solid var(--border);
-    }
-
-    .stat-box .title {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 600;
-    }
-
-    .stat-box .amount {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-top: 4px;
-    }
-
-    .sub-detail {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    form {
-      display: grid;
-      gap: 12px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent-blue);
-    }
-
-    button {
-      background: var(--accent-blue);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s, transform 0.1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    button:active {
-      transform: scale(0.99);
-    }
-
-    .btn-danger {
-      background: var(--accent-red);
-    }
-
-    .btn-success {
-      background: var(--accent-green);
-    }
-
-    .btn-sm {
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      border-radius: 4px;
-      width: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 0.85rem;
-    }
-
-    th, td {
-      padding: 10px 8px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .badge {
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-
-    .badge-ingreso {
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--accent-green);
-    }
-
-    .badge-egreso {
-      background: rgba(239, 68, 68, 0.2);
-      color: var(--accent-red);
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .tab-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 20px;
-      color: var(--text-muted);
-      cursor: pointer;
-      white-space: nowrap;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .tab-btn.active {
-      background: var(--accent-blue);
-      color: white;
-      border-color: var(--accent-blue);
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .empty-msg {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 16px 0;
-      font-style: italic;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
 <div class="container">
-  <header>
-    <h1>💼 Control Financiero Bimonetario</h1>
-  </header>
+  <div class="header-flex">
+    <h1>💰 Control Financiero Cloud</h1>
+    <div id="syncStatus" class="sync-status">🔄 Conectando a la nube...</div>
+  </div>
 
-  <!-- RESUMEN GENERAL -->
+  <!-- RESUMEN DE SALDOS DESGLOSADOS -->
   <div class="card">
-    <h2>📊 Resumen de Saldos</h2>
+    <h2>📊 Resumen de Saldos Desglosados</h2>
     
-    <!-- SALDOS DISPONIBLES EN CUENTAS -->
-    <h3 style="color: var(--accent-blue);">1. Cuentas y Caja Disponible</h3>
-    <div class="grid-4" style="margin-bottom: 16px;">
+    <h3 style="color: var(--accent-blue); font-size: 0.95rem; margin-top: 10px;">Saldos Disponibles</h3>
+    <div class="grid-4" style="margin-bottom: 15px;">
       <div class="stat-box">
         <div class="title">💵 USD Físicos</div>
         <div class="amount" id="bal-usd-fis">$ 0.00</div>
@@ -292,106 +95,98 @@
       </div>
     </div>
 
-    <!-- CUENTAS POR COBRAR Y POR PAGAR -->
-    <div class="grid-2" style="margin-bottom: 16px;">
-      <div>
-        <h3 style="color: var(--accent-green);">2. Cuentas por Cobrar (Prestado)</h3>
-        <div class="grid-2">
-          <div class="stat-box">
-            <div class="title">Prestado USD</div>
-            <div class="amount" style="color: var(--accent-green);" id="rec-usd">$ 0.00</div>
-          </div>
-          <div class="stat-box">
-            <div class="title">Prestado Bs.</div>
-            <div class="amount" style="color: var(--accent-green);" id="rec-bs">Bs. 0.00</div>
-          </div>
-        </div>
+    <h3 style="color: var(--accent-green); font-size: 0.95rem;">Cuentas por Cobrar (Prestado)</h3>
+    <div class="grid-2" style="margin-bottom: 15px;">
+      <div class="stat-box">
+        <div class="title">Prestado en Dólares ($)</div>
+        <div class="amount" style="color: var(--accent-green);" id="rec-usd">$ 0.00</div>
       </div>
-
-      <div>
-        <h3 style="color: var(--accent-red);">3. Cuentas por Pagar (Deudas)</h3>
-        <div class="grid-2">
-          <div class="stat-box">
-            <div class="title">Debo USD</div>
-            <div class="amount" style="color: var(--accent-red);" id="pay-usd">$ 0.00</div>
-          </div>
-          <div class="stat-box">
-            <div class="title">Debo Bs.</div>
-            <div class="amount" style="color: var(--accent-red);" id="pay-bs">Bs. 0.00</div>
-          </div>
-        </div>
+      <div class="stat-box">
+        <div class="title">Prestado en Bolívares (Bs.)</div>
+        <div class="amount" style="color: var(--accent-green);" id="rec-bs">Bs. 0.00</div>
       </div>
     </div>
 
-    <!-- PATRIMONIO NETO REAL -->
-    <h3 style="color: var(--accent-amber);">4. Patrimonio Neto Real (Disponible + Prestado - Deudas)</h3>
+    <h3 style="color: var(--accent-red); font-size: 0.95rem;">Deudas Por Pagar</h3>
+    <div class="grid-2" style="margin-bottom: 15px;">
+      <div class="stat-box">
+        <div class="title">Debo en Dólares ($)</div>
+        <div class="amount" style="color: var(--accent-red);" id="pay-usd">$ 0.00</div>
+      </div>
+      <div class="stat-box">
+        <div class="title">Debo en Bolívares (Bs.)</div>
+        <div class="amount" style="color: var(--accent-red);" id="pay-bs">Bs. 0.00</div>
+      </div>
+    </div>
+
+    <h3 style="color: var(--accent-amber); font-size: 0.95rem;">Balance Neto (Disponible + Prestado - Deudas)</h3>
     <div class="grid-2">
-      <div class="stat-box" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.4);">
-        <div class="title">Patrimonio Total USD</div>
+      <div class="stat-box" style="background: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue);">
+        <div class="title">Patrimonio Total en USD ($)</div>
         <div class="amount" style="color: #60a5fa;" id="net-usd">$ 0.00</div>
-        <div class="sub-detail" id="net-usd-detail">Disp: $0.00 | Cobrar: $0.00 | Deuda: $0.00</div>
+        <div class="sub-detail" id="net-usd-detail">(Disp: $0.00 | Cobrar: $0.00 | Deuda: $0.00)</div>
       </div>
-      <div class="stat-box" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.4);">
-        <div class="title">Patrimonio Total Bolívares</div>
+      <div class="stat-box" style="background: rgba(245, 158, 11, 0.1); border-color: var(--accent-amber);">
+        <div class="title">Patrimonio Total en Bolívares (Bs.)</div>
         <div class="amount" style="color: #fcd34d;" id="net-bs">Bs. 0.00</div>
-        <div class="sub-detail" id="net-bs-detail">Disp: Bs. 0.00 | Cobrar: Bs. 0.00 | Deuda: Bs. 0.00</div>
+        <div class="sub-detail" id="net-bs-detail">(Disp: Bs. 0.00 | Cobrar: Bs. 0.00 | Deuda: Bs. 0.00)</div>
       </div>
     </div>
   </div>
 
-  <!-- SELECTOR DE PESTAÑAS -->
+  <!-- NAVEGACIÓN TAB -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="tab-trans">Transacciones</button>
-    <button class="tab-btn" data-tab="tab-loans">Préstamos Realizados</button>
-    <button class="tab-btn" data-tab="tab-debts">Mis Deudas</button>
+    <button class="tab-btn active" onclick="switchTab('tab-trans', this)">Transacciones</button>
+    <button class="tab-btn" onclick="switchTab('tab-loans', this)">Préstamos Realizados</button>
+    <button class="tab-btn" onclick="switchTab('tab-debts', this)">Mis Deudas</button>
   </div>
 
-  <!-- PESTAÑA 1: TRANSACCIONES -->
+  <!-- TAB 1: TRANSACCIONES -->
   <div id="tab-trans" class="tab-content active">
     <div class="card">
-      <h3>➕ Registrar Movimiento (Ingreso / Egreso)</h3>
-      <form id="transForm">
+      <h3>Registrar Ingreso / Egreso</h3>
+      <form id="transForm" onsubmit="addTransaction(event)">
         <div class="grid-2">
-          <div class="form-group">
-            <label for="tType">Tipo Movimiento</label>
+          <div>
+            <label>Tipo Movimiento</label>
             <select id="tType">
-              <option value="ingreso">Ingreso (+)</option>
-              <option value="egreso">Egreso (-)</option>
+              <option value="ingreso">Ingreso</option>
+              <option value="egreso">Egreso</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="tAmount">Monto</label>
-            <input type="number" id="tAmount" step="0.01" min="0.01" placeholder="0.00" required>
+          <div>
+            <label>Monto</label>
+            <input type="number" id="tAmount" step="0.01" required>
           </div>
         </div>
         <div class="grid-2">
-          <div class="form-group">
-            <label for="tAccount">Cuenta / Caja</label>
+          <div>
+            <label>Cuenta / Saldo Afectado</label>
             <select id="tAccount">
               <option value="usd_fis">USD Físico ($)</option>
               <option value="usd_dig">USD Digital ($)</option>
-              <option value="bs_fis">Bs. Físico (Bs.)</option>
-              <option value="bs_dig">Bs. Digital (Bs.)</option>
+              <option value="bs_fis">Bs. Físico</option>
+              <option value="bs_dig">Bs. Digital</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="tOwner">Propietario del Movimiento</label>
+          <div>
+            <label>Propietario del Gasto / Movimiento</label>
             <select id="tOwner">
-              <option value="Propio">Gasto / Ingreso Propio</option>
+              <option value="Propio">Propio</option>
               <option value="Tercero">De Alguien Más (Tercero)</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label for="tDesc">Descripción / Motivo</label>
-          <input type="text" id="tDesc" placeholder="Ej. Pago de servicio, compra de comida, cobro de trabajo..." required>
+        <div>
+          <label>Descripción / Detalle</label>
+          <input type="text" id="tDesc" placeholder="Ej. Reparación, venta, víveres..." required>
         </div>
         <button type="submit" class="btn-success">Guardar Movimiento</button>
       </form>
     </div>
 
     <div class="card">
-      <h3>📜 Historial de Movimientos</h3>
+      <h3>Historial de Movimientos</h3>
       <div style="overflow-x: auto;">
         <table>
           <thead>
@@ -401,7 +196,7 @@
               <th>Cuenta</th>
               <th>Propietario</th>
               <th>Monto</th>
-              <th>Acciones</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody id="transTable"></tbody>
@@ -410,47 +205,47 @@
     </div>
   </div>
 
-  <!-- PESTAÑA 2: PRÉSTAMOS REALIZADOS -->
+  <!-- TAB 2: PRESTAMOS -->
   <div id="tab-loans" class="tab-content">
     <div class="card">
-      <h3>🤝 Registrar Dinero Prestado (Por Cobrar)</h3>
-      <form id="loanForm">
+      <h3>Registrar Dinero Prestado (Cuentas por Cobrar)</h3>
+      <form id="loanForm" onsubmit="addLoan(event)">
         <div class="grid-2">
-          <div class="form-group">
-            <label for="lDebtor">Nombre del Deudor</label>
-            <input type="text" id="lDebtor" placeholder="Ej. Juan Pérez" required>
+          <div>
+            <label>Nombre del Deudor</label>
+            <input type="text" id="lDebtor" required>
           </div>
-          <div class="form-group">
-            <label for="lAmount">Monto Prestado</label>
-            <input type="number" id="lAmount" step="0.01" min="0.01" placeholder="0.00" required>
+          <div>
+            <label>Monto Prestado</label>
+            <input type="number" id="lAmount" step="0.01" required>
           </div>
         </div>
         <div class="grid-2">
-          <div class="form-group">
-            <label for="lCurrency">Moneda</label>
+          <div>
+            <label>Moneda</label>
             <select id="lCurrency">
               <option value="USD">USD ($)</option>
               <option value="BS">Bs. (Bolívares)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="lInterestType">Condición / Interés</label>
+          <div>
+            <label>Interés</label>
             <select id="lInterestType">
               <option value="Sin Interés">Sin Interés</option>
               <option value="Con Interés">Con Interés</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label for="lNotes">Detalles u Observaciones</label>
-          <input type="text" id="lNotes" placeholder="Ej. 5% de interés semanal, promete pagar en quince días...">
+        <div>
+          <label>Detalles / % de Interés / Observaciones</label>
+          <input type="text" id="lNotes" placeholder="Ej. 5% mensual, paga los 15...">
         </div>
         <button type="submit">Registrar Préstamo</button>
       </form>
     </div>
 
     <div class="card">
-      <h3>📋 Lista de Préstamos Otorgados</h3>
+      <h3>Préstamos Activos</h3>
       <div style="overflow-x: auto;">
         <table>
           <thead>
@@ -459,7 +254,7 @@
               <th>Monto</th>
               <th>Interés</th>
               <th>Detalles</th>
-              <th>Acciones</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody id="loansTable"></tbody>
@@ -468,32 +263,32 @@
     </div>
   </div>
 
-  <!-- PESTAÑA 3: MIS DEUDAS -->
+  <!-- TAB 3: MIS DEUDAS -->
   <div id="tab-debts" class="tab-content">
     <div class="card">
-      <h3>⚠️ Registrar Deuda Propia (Por Pagar)</h3>
-      <form id="debtForm">
+      <h3>Registrar Deuda Propia (Cuentas por Pagar)</h3>
+      <form id="debtForm" onsubmit="addDebt(event)">
         <div class="grid-2">
-          <div class="form-group">
-            <label for="dCreditor">Nombre del Acreedor (A quién le debo)</label>
-            <input type="text" id="dCreditor" placeholder="Ej. Pedro Gómez / Proveedor" required>
+          <div>
+            <label>A quién le debo (Acreedor)</label>
+            <input type="text" id="dCreditor" required>
           </div>
-          <div class="form-group">
-            <label for="dAmount">Monto Pendiente</label>
-            <input type="number" id="dAmount" step="0.01" min="0.01" placeholder="0.00" required>
+          <div>
+            <label>Monto</label>
+            <input type="number" id="dAmount" step="0.01" required>
           </div>
         </div>
         <div class="grid-2">
-          <div class="form-group">
-            <label for="dCurrency">Moneda</label>
+          <div>
+            <label>Moneda</label>
             <select id="dCurrency">
               <option value="USD">USD ($)</option>
               <option value="BS">Bs. (Bolívares)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="dNotes">Detalle / Motivo</label>
-            <input type="text" id="dNotes" placeholder="Ej. Repuestos, saldo de mercancía...">
+          <div>
+            <label>Detalle / Motivo</label>
+            <input type="text" id="dNotes" placeholder="Ej. Mercancía, repuestos...">
           </div>
         </div>
         <button type="submit" class="btn-danger">Registrar Deuda</button>
@@ -501,15 +296,15 @@
     </div>
 
     <div class="card">
-      <h3>📋 Lista de Deudas Pendientes</h3>
+      <h3>Mis Deudas Pendientes</h3>
       <div style="overflow-x: auto;">
         <table>
           <thead>
             <tr>
               <th>Acreedor</th>
               <th>Monto</th>
-              <th>Detalles</th>
-              <th>Acciones</th>
+              <th>Detalle</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody id="debtsTable"></tbody>
@@ -521,283 +316,212 @@
 </div>
 
 <script>
-  // Estado interno de la aplicación
-  var state = {
+  // Tus credenciales configuradas de Firebase[cite: 1]
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2GUCu7J-yszmOg0Y2zLUfsMoruItF3Aw",
+    authDomain: "misfinanzas-79943.firebaseapp.com",
+    databaseURL: "https://misfinanzas-79943-default-rtdb.firebaseio.com",
+    projectId: "misfinanzas-79943",
+    storageBucket: "misfinanzas-79943.appspot.com",
+    messagingSenderId: "338870349487",
+    appId: "1:338870349487:web:8e38d70bf02e20d2d3a01a"
+  };
+
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  } catch(e) {
+    console.warn("Error al conectar Firebase:", e);
+  }
+
+  let state = {
     transactions: [],
     loans: [],
     debts: []
   };
 
-  // Carga inicial y listeners de eventos seguros
-  document.addEventListener('DOMContentLoaded', function() {
-    loadState();
-    setupTabListeners();
-    setupFormListeners();
-    render();
-  });
-
-  // Guardado seguro en localStorage con fallback en memoria
-  function saveState() {
-    try {
-      localStorage.setItem('finanzas_bimonetarias_app_data', JSON.stringify(state));
-    } catch(e) {
-      console.warn('localStorage inaccesible o restringido, los datos se mantendrán durante esta sesión.');
-    }
-    render();
-  }
-
-  // Carga segura desde localStorage
-  function loadState() {
-    try {
-      var data = localStorage.getItem('finanzas_bimonetarias_app_data');
-      if (data) {
-        var parsed = JSON.parse(data);
-        state.transactions = parsed.transactions || [];
-        state.loans = parsed.loans || [];
-        state.debts = parsed.debts || [];
-      }
-    } catch(e) {
-      console.warn('No se pudo leer localStorage:', e);
-    }
-  }
-
-  // Configuración de pestañas
-  function setupTabListeners() {
-    var buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var targetTab = this.getAttribute('data-tab');
-        
-        document.querySelectorAll('.tab-content').forEach(function(tab) {
-          tab.classList.remove('active');
-        });
-        buttons.forEach(function(b) {
-          b.classList.remove('active');
-        });
-
-        document.getElementById(targetTab).classList.add('active');
-        this.classList.add('active');
+  window.onload = () => {
+    if (db) {
+      const dbRef = db.ref('finanzas_data');
+      dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          state = data;
+          document.getElementById('syncStatus').innerText = "🟢 Sincronizado en la nube";
+          document.getElementById('syncStatus').style.borderColor = "#10b981";
+        } else {
+          document.getElementById('syncStatus').innerText = "🟢 Nube lista (Sin datos)";
+        }
+        render();
+      }, (error) => {
+        document.getElementById('syncStatus').innerText = "🔴 Error de conexión";
+        document.getElementById('syncStatus').style.borderColor = "#ef4444";
       });
-    });
+    } else {
+      document.getElementById('syncStatus').innerText = "⚠️ Modo Local";
+      const saved = localStorage.getItem('finanzas_bimonetarias_data');
+      if (saved) state = JSON.parse(saved);
+      render();
+    }
+  };
+
+  function saveData() {
+    if (db) {
+      db.ref('finanzas_data').set(state).catch(err => {
+        alert("Error al sincronizar con la nube: " + err.message);
+      });
+    } else {
+      localStorage.setItem('finanzas_bimonetarias_data', JSON.stringify(state));
+      render();
+    }
   }
 
-  // Configuración segura de los 3 formularios principales
-  function setupFormListeners() {
-    // 1. Transacciones
-    var transForm = document.getElementById('transForm');
-    transForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var amountVal = parseFloat(document.getElementById('tAmount').value);
-      if (isNaN(amountVal) || amountVal <= 0) return;
-
-      var newTrans = {
-        id: Date.now(),
-        type: document.getElementById('tType').value,
-        amount: amountVal,
-        account: document.getElementById('tAccount').value,
-        owner: document.getElementById('tOwner').value,
-        desc: document.getElementById('tDesc').value.trim()
-      };
-
-      state.transactions.push(newTrans);
-      transForm.reset();
-      saveState();
-    });
-
-    // 2. Préstamos Realizados
-    var loanForm = document.getElementById('loanForm');
-    loanForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var amountVal = parseFloat(document.getElementById('lAmount').value);
-      if (isNaN(amountVal) || amountVal <= 0) return;
-
-      var newLoan = {
-        id: Date.now(),
-        debtor: document.getElementById('lDebtor').value.trim(),
-        amount: amountVal,
-        currency: document.getElementById('lCurrency').value,
-        interest: document.getElementById('lInterestType').value,
-        notes: document.getElementById('lNotes').value.trim()
-      };
-
-      state.loans.push(newLoan);
-      loanForm.reset();
-      saveState();
-    });
-
-    // 3. Deudas Propias
-    var debtForm = document.getElementById('debtForm');
-    debtForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var amountVal = parseFloat(document.getElementById('dAmount').value);
-      if (isNaN(amountVal) || amountVal <= 0) return;
-
-      var newDebt = {
-        id: Date.now(),
-        creditor: document.getElementById('dCreditor').value.trim(),
-        amount: amountVal,
-        currency: document.getElementById('dCurrency').value,
-        notes: document.getElementById('dNotes').value.trim()
-      };
-
-      state.debts.push(newDebt);
-      debtForm.reset();
-      saveState();
-    });
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
   }
 
-  // Funciones de eliminación de registros
-  function deleteTransaction(id) {
-    state.transactions = state.transactions.filter(function(item) {
-      return item.id !== id;
-    });
-    saveState();
+  function addTransaction(e) {
+    e.preventDefault();
+    const item = {
+      id: Date.now(),
+      type: document.getElementById('tType').value,
+      amount: parseFloat(document.getElementById('tAmount').value) || 0,
+      account: document.getElementById('tAccount').value,
+      owner: document.getElementById('tOwner').value,
+      desc: document.getElementById('tDesc').value
+    };
+    if(!state.transactions) state.transactions = [];
+    state.transactions.push(item);
+    document.getElementById('transForm').reset();
+    saveData();
+  }
+
+  function deleteTrans(id) {
+    state.transactions = state.transactions.filter(t => t.id !== id);
+    saveData();
+  }
+
+  function addLoan(e) {
+    e.preventDefault();
+    const item = {
+      id: Date.now(),
+      debtor: document.getElementById('lDebtor').value,
+      amount: parseFloat(document.getElementById('lAmount').value) || 0,
+      currency: document.getElementById('lCurrency').value,
+      interest: document.getElementById('lInterestType').value,
+      notes: document.getElementById('lNotes').value
+    };
+    if(!state.loans) state.loans = [];
+    state.loans.push(item);
+    document.getElementById('loanForm').reset();
+    saveData();
   }
 
   function deleteLoan(id) {
-    state.loans = state.loans.filter(function(item) {
-      return item.id !== id;
-    });
-    saveState();
+    state.loans = state.loans.filter(l => l.id !== id);
+    saveData();
+  }
+
+  function addDebt(e) {
+    e.preventDefault();
+    const item = {
+      id: Date.now(),
+      creditor: document.getElementById('dCreditor').value,
+      amount: parseFloat(document.getElementById('dAmount').value) || 0,
+      currency: document.getElementById('dCurrency').value,
+      notes: document.getElementById('dNotes').value
+    };
+    if(!state.debts) state.debts = [];
+    state.debts.push(item);
+    document.getElementById('debtForm').reset();
+    saveData();
   }
 
   function deleteDebt(id) {
-    state.debts = state.debts.filter(function(item) {
-      return item.id !== id;
-    });
-    saveState();
+    state.debts = state.debts.filter(d => d.id !== id);
+    saveData();
   }
 
-  // Renderizado dinámico general de la interfaz
   function render() {
-    // 1. Calcular Saldos Disponibles por Cuenta
-    var balances = {
-      usd_fis: 0,
-      usd_dig: 0,
-      bs_fis: 0,
-      bs_dig: 0
-    };
-
-    state.transactions.forEach(function(t) {
-      var factor = (t.type === 'ingreso') ? 1 : -1;
+    let balances = { bs_fis: 0, bs_dig: 0, usd_fis: 0, usd_dig: 0 };
+    (state.transactions || []).forEach(t => {
+      const sign = t.type === 'ingreso' ? 1 : -1;
       if (balances.hasOwnProperty(t.account)) {
-        balances[t.account] += (t.amount * factor);
+        balances[t.account] += (t.amount * sign);
       }
     });
 
-    document.getElementById('bal-usd-fis').innerText = '$ ' + balances.usd_fis.toFixed(2);
-    document.getElementById('bal-usd-dig').innerText = '$ ' + balances.usd_dig.toFixed(2);
-    document.getElementById('bal-bs-fis').innerText = 'Bs. ' + balances.bs_fis.toFixed(2);
-    document.getElementById('bal-bs-dig').innerText = 'Bs. ' + balances.bs_dig.toFixed(2);
+    document.getElementById('bal-usd-fis').innerText = `$ ${(balances.usd_fis || 0).toFixed(2)}`;
+    document.getElementById('bal-usd-dig').innerText = `$ ${(balances.usd_dig || 0).toFixed(2)}`;
+    document.getElementById('bal-bs-fis').innerText = `Bs. ${(balances.bs_fis || 0).toFixed(2)}`;
+    document.getElementById('bal-bs-dig').innerText = `Bs. ${(balances.bs_dig || 0).toFixed(2)}`;
 
-    // 2. Renderizar Tabla de Movimientos
-    var transTable = document.getElementById('transTable');
-    if (state.transactions.length === 0) {
-      transTable.innerHTML = '<tr><td colspan="6" class="empty-msg">No hay movimientos registrados.</td></tr>';
-    } else {
-      var htmlTrans = '';
-      for (var i = state.transactions.length - 1; i >= 0; i--) {
-        var t = state.transactions[i];
-        var symbol = (t.account.indexOf('bs') === 0) ? 'Bs.' : '$';
-        var accountLabel = '';
-        if (t.account === 'usd_fis') accountLabel = 'USD Físico';
-        else if (t.account === 'usd_dig') accountLabel = 'USD Digital';
-        else if (t.account === 'bs_fis') accountLabel = 'Bs. Físico';
-        else if (t.account === 'bs_dig') accountLabel = 'Bs. Digital';
+    const tBody = document.getElementById('transTable');
+    tBody.innerHTML = (state.transactions || []).map(t => `
+      <tr>
+        <td><span class="badge badge-${t.type}">${t.type.toUpperCase()}</span></td>
+        <td>${t.desc}</td>
+        <td>${t.account.replace('_', ' ').toUpperCase()}</td>
+        <td>${t.owner}</td>
+        <td><b>${t.account.startsWith('bs') ? 'Bs.' : '$'} ${t.amount.toFixed(2)}</b></td>
+        <td><button class="btn-danger" style="padding: 2px 6px; font-size: 0.75rem;" onclick="deleteTrans(${t.id})">X</button></td>
+      </tr>
+    `).join('');
 
-        htmlTrans += '<tr>' +
-          '<td><span class="badge badge-' + t.type + '">' + t.type.toUpperCase() + '</span></td>' +
-          '<td>' + escapeHTML(t.desc) + '</td>' +
-          '<td>' + accountLabel + '</td>' +
-          '<td>' + escapeHTML(t.owner) + '</td>' +
-          '<td><b>' + symbol + ' ' + t.amount.toFixed(2) + '</b></td>' +
-          '<td><button class="btn-danger btn-sm" onclick="deleteTransaction(' + t.id + ')">Eliminar</button></td>' +
-        '</tr>';
-      }
-      transTable.innerHTML = htmlTrans;
-    }
+    let recUSD = 0, recBS = 0;
+    const lBody = document.getElementById('loansTable');
+    lBody.innerHTML = (state.loans || []).map(l => {
+      if (l.currency === 'USD') recUSD += l.amount;
+      else recBS += l.amount;
 
-    // 3. Renderizar Préstamos y Calcular Cuentas por Cobrar
-    var recUSD = 0;
-    var recBS = 0;
-    var loansTable = document.getElementById('loansTable');
+      return `
+        <tr>
+          <td><b>${l.debtor}</b></td>
+          <td>${l.currency === 'BS' ? 'Bs.' : '$'} ${l.amount.toFixed(2)}</td>
+          <td>${l.interest}</td>
+          <td>${l.notes || '-'}</td>
+          <td><button class="btn-success" style="padding: 2px 6px; font-size: 0.75rem;" onclick="deleteLoan(${l.id})">Cobrado / Eliminar</button></td>
+        </tr>
+      `;
+    }).join('');
 
-    if (state.loans.length === 0) {
-      loansTable.innerHTML = '<tr><td colspan="5" class="empty-msg">No hay préstamos por cobrar registrados.</td></tr>';
-    } else {
-      var htmlLoans = '';
-      state.loans.forEach(function(l) {
-        if (l.currency === 'USD') recUSD += l.amount;
-        else recBS += l.amount;
+    document.getElementById('rec-usd').innerText = `$ ${recUSD.toFixed(2)}`;
+    document.getElementById('rec-bs').innerText = `Bs. ${recBS.toFixed(2)}`;
 
-        var symbol = (l.currency === 'USD') ? '$' : 'Bs.';
-        htmlLoans += '<tr>' +
-          '<td><b>' + escapeHTML(l.debtor) + '</b></td>' +
-          '<td>' + symbol + ' ' + l.amount.toFixed(2) + '</td>' +
-          '<td>' + escapeHTML(l.interest) + '</td>' +
-          '<td>' + (l.notes ? escapeHTML(l.notes) : '-') + '</td>' +
-          '<td><button class="btn-success btn-sm" onclick="deleteLoan(' + l.id + ')">Saldado / Cobrado</button></td>' +
-        '</tr>';
-      });
-      loansTable.innerHTML = htmlLoans;
-    }
+    let payUSD = 0, payBS = 0;
+    const dBody = document.getElementById('debtsTable');
+    dBody.innerHTML = (state.debts || []).map(d => {
+      if (d.currency === 'USD') payUSD += d.amount;
+      else payBS += d.amount;
 
-    document.getElementById('rec-usd').innerText = '$ ' + recUSD.toFixed(2);
-    document.getElementById('rec-bs').innerText = 'Bs. ' + recBS.toFixed(2);
+      return `
+        <tr>
+          <td><b>${d.creditor}</b></td>
+          <td>${d.currency === 'BS' ? 'Bs.' : '$'} ${d.amount.toFixed(2)}</td>
+          <td>${d.notes || '-'}</td>
+          <td><button class="btn-success" style="padding: 2px 6px; font-size: 0.75rem;" onclick="deleteDebt(${d.id})">Pagado / Eliminar</button></td>
+        </tr>
+      `;
+    }).join('');
 
-    // 4. Renderizar Deudas y Calcular Cuentas por Pagar
-    var payUSD = 0;
-    var payBS = 0;
-    var debtsTable = document.getElementById('debtsTable');
+    document.getElementById('pay-usd').innerText = `$ ${payUSD.toFixed(2)}`;
+    document.getElementById('pay-bs').innerText = `Bs. ${payBS.toFixed(2)}`;
 
-    if (state.debts.length === 0) {
-      debtsTable.innerHTML = '<tr><td colspan="4" class="empty-msg">No hay deudas por pagar registradas.</td></tr>';
-    } else {
-      var htmlDebts = '';
-      state.debts.forEach(function(d) {
-        if (d.currency === 'USD') payUSD += d.amount;
-        else payBS += d.amount;
+    const totalDispUSD = balances.usd_fis + balances.usd_dig;
+    const netUSD = totalDispUSD + recUSD - payUSD;
 
-        var symbol = (d.currency === 'USD') ? '$' : 'Bs.';
-        htmlDebts += '<tr>' +
-          '<td><b>' + escapeHTML(d.creditor) + '</b></td>' +
-          '<td>' + symbol + ' ' + d.amount.toFixed(2) + '</td>' +
-          '<td>' + (d.notes ? escapeHTML(d.notes) : '-') + '</td>' +
-          '<td><button class="btn-success btn-sm" onclick="deleteDebt(' + d.id + ')">Saldado / Pagado</button></td>' +
-        '</tr>';
-      });
-      debtsTable.innerHTML = htmlDebts;
-    }
+    const totalDispBS = balances.bs_fis + balances.bs_dig;
+    const netBS = totalDispBS + recBS - payBS;
 
-    document.getElementById('pay-usd').innerText = '$ ' + payUSD.toFixed(2);
-    document.getElementById('pay-bs').innerText = 'Bs. ' + payBS.toFixed(2);
+    document.getElementById('net-usd').innerText = `$ ${netUSD.toFixed(2)}`;
+    document.getElementById('net-usd-detail').innerText = `(Disp: $${totalDispUSD.toFixed(2)} | Cobrar: $${recUSD.toFixed(2)} | Deuda: $${payUSD.toFixed(2)})`;
 
-    // 5. Balance Neto Final
-    var totalDispUSD = balances.usd_fis + balances.usd_dig;
-    var netUSD = totalDispUSD + recUSD - payUSD;
-
-    var totalDispBS = balances.bs_fis + balances.bs_dig;
-    var netBS = totalDispBS + recBS - payBS;
-
-    document.getElementById('net-usd').innerText = '$ ' + netUSD.toFixed(2);
-    document.getElementById('net-usd-detail').innerText = 'Disp: $' + totalDispUSD.toFixed(2) + ' | Cobrar: $' + recUSD.toFixed(2) + ' | Deuda: $' + payUSD.toFixed(2);
-
-    document.getElementById('net-bs').innerText = 'Bs. ' + netBS.toFixed(2);
-    document.getElementById('net-bs-detail').innerText = 'Disp: Bs. ' + totalDispBS.toFixed(2) + ' | Cobrar: Bs. ' + recBS.toFixed(2) + ' | Deuda: Bs. ' + payBS.toFixed(2);
-  }
-
-  // Utilidad simple para prevenir inyección de HTML
-  function escapeHTML(str) {
-    if (!str) return '';
-    return str.replace(/[&<>"']/g, function(m) {
-      return {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[m];
-    });
+    document.getElementById('net-bs').innerText = `Bs. ${netBS.toFixed(2)}`;
+    document.getElementById('net-bs-detail').innerText = `(Disp: Bs. ${totalDispBS.toFixed(2)} | Cobrar: Bs. ${recBS.toFixed(2)} | Deuda: Bs. ${payBS.toFixed(2)})`;
   }
 </script>
 
